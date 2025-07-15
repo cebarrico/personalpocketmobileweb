@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/* Personal Pocket Design System - Dark Theme */
+@theme {
+  /* Colors */
+  --color-background: #1e2a38; /* dark-teal */
+  --color-foreground: #f1f5f9; /* ice-white */
+
+  --color-card: #36495c; /* light-gray */
+  --color-card-foreground: #f1f5f9; /* ice-white */
+
+  --color-popover: #36495c; /* light-gray */
+  --color-popover-foreground: #f1f5f9; /* ice-white */
+
+  --color-primary: #3dd9b3; /* aqua */
+  --color-primary-foreground: #1e2a38; /* dark-teal */
+
+  --color-secondary: #2c3a4a; /* medium-blue-gray */
+  --color-secondary-foreground: #f1f5f9; /* ice-white */
+
+  --color-muted: #2c3a4a; /* medium-blue-gray */
+  --color-muted-foreground: #aebecd; /* light-gray-text */
+
+  --color-accent: #3dd9b3; /* aqua */
+  --color-accent-foreground: #1e2a38; /* dark-teal */
+
+  --color-destructive: #ff5c5c; /* coral-red */
+  --color-destructive-foreground: #f1f5f9; /* ice-white */
+
+  --color-border: #36495c; /* light-gray */
+  --color-input: #36495c; /* light-gray */
+  --color-ring: #3dd9b3; /* aqua */
+
+  /* Sidebar colors */
+  --color-sidebar-background: #2c3a4a; /* medium-blue-gray */
+  --color-sidebar-foreground: #f1f5f9; /* ice-white */
+  --color-sidebar-primary: #3dd9b3; /* aqua */
+  --color-sidebar-primary-foreground: #1e2a38; /* dark-teal */
+  --color-sidebar-accent: #36495c; /* light-gray */
+  --color-sidebar-accent-foreground: #f1f5f9; /* ice-white */
+  --color-sidebar-border: #36495c; /* light-gray */
+  --color-sidebar-ring: #3dd9b3; /* aqua */
+
+  /* Personal Pocket custom colors */
+  --color-dark-teal: #1e2a38;
+  --color-medium-blue-gray: #2c3a4a;
+  --color-light-gray: #36495c;
+  --color-ice-white: #f1f5f9;
+  --color-light-gray-text: #aebecd;
+  --color-aqua: #3dd9b3;
+  --color-dark-aqua: #1e6956;
+  --color-coral-red: #ff5c5c;
+  --color-fuschia-pink: #d93d64;
+  --color-cian-blue: #00fff6;
+
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* Font families */
+  --font-family-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Box shadows */
+  --shadow-aqua: 0 4px 14px 0 rgba(61, 217, 179, 0.1);
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+}
+
+/* Base styles */
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-family: var(--font-family-inter);
+}
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-semibold;
+}
+
+/* Aplica a todo o site */
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #3dd9b3 #2c3a4a; /* Cor da barra | fundo */
+}
+
+/* WebKit browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e; /* Fundo escuro */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3dd9b3; /* Cor predominante */
+  border-radius: 10px;
+  border: 2px solid #1e1e1e; /* Espaço entre thumb e track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #30b495; /* Um tom mais escuro ao passar o mouse */
+}
+
+/* Component classes */
+.gradient-bg {
+  background: linear-gradient(135deg, #1e2a38 0%, #2c3a4a 100%);
+}
+
+.hover-scale {
+  @apply transition-transform duration-200 hover:scale-105;
+}
+
+.aqua-glow {
+  box-shadow: var(--shadow-aqua);
+}
+
+/* Keyframes for animations */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
