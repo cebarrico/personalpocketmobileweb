@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -148,8 +148,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
       const result = await signUp(formData);
       if (!result.error) {
         toast({
-          title: "Registro realizado com sucesso!",
-          description: "Bem-vindo ao Personal Pocket!",
+          title: "Cadastro realizado com sucesso!",
+          description: "Agora você pode fazer login com suas credenciais.",
         });
         handleClose();
       } else {
@@ -177,7 +177,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
     }
   };
 
-  const handleInputChange = (field: keyof RegisterForm, value: any) => {
+  const handleInputChange = (field: keyof RegisterForm, value: unknown) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,

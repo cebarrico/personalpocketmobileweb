@@ -140,6 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Erro ao verificar CPF:", fetchError);
         return { error: "Erro ao verificar CPF." };
       }
+
       // 1. Cria o usuário no auth
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
@@ -147,7 +148,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       if (signUpError) {
-        return { error: signUpError.message };
+        console.error("Erro ao criar usuário no auth:", signUpError);
+        // Se o usuário já existe, tentar buscar o ID
+        if (signUpError.message.includes("already registered")) {
+          const {
+            data: { user },
+            error: getUserError,
+          } = await supabase.auth.getUser();
+          if (getUserError || !user) {
+            return { error: "Email já está em uso." };
+          }
+          // Continuar com o usuário existente
+        } else {
+          return { error: signUpError.message };
+        }
       }
 
       const userId = data.user?.id;
@@ -156,22 +170,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return { error: "Erro ao obter ID do usuário após cadastro." };
       }
 
-      // 2. Insere dados adicionais na tabela "users"
-      const { error: insertError } = await supabase.from("users").insert([
-        {
-          id: userId,
-          full_name: formData.full_name,
-          email: formData.email,
-          role: formData.role,
-          cpf: formData.cpf,
-          phone: formData.phone,
-          birth_date: formData.birth_date,
-        },
-      ]);
+      // Fazer logout imediatamente para evitar redirecionamento automático
+      await supabase.auth.signOut();
 
-      if (insertError) {
-        return { error: insertError.message };
+      console.log("Criando usuário com ID:", userId);
+
+      // 2. Insere ou atualiza dados na tabela "users" usando upsert
+      const { error: upsertError } = await supabase.from("users").upsert(
+        [
+          {
+            id: userId,
+            full_name: formData.full_name,
+            email: formData.email,
+            role: formData.role,
+            cpf: formData.cpf,
+            phone: formData.phone,
+            birth_date: formData.birth_date,
+            gender: formData.gender,
+            // Campos específicos do professor
+            cref: formData.cref,
+            // Campos específicos do aluno
+            teacher_id: formData.teacher_id,
+            goal: formData.goal,
+            height_cm: formData.height_cm,
+            weight_kg: formData.weight_kg,
+            body_fat_percent: formData.body_fat_percent,
+          },
+        ],
+        {
+          onConflict: "id",
+        }
+      );
+
+      if (upsertError) {
+        console.error("Erro ao inserir dados do usuário:", upsertError);
+        return { error: upsertError.message };
       }
+
+      console.log("Usuário criado com sucesso!");
 
       return { error: null };
     } catch (error) {
